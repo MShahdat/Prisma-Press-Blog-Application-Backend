@@ -1,0 +1,25 @@
+
+model User {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  activeStatus ActiveStatus @default(ACTIVE)
+  role Role @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile Profile?
+  post Post[]
+  comment Comment[]
+}
+
+enum ActiveStatus{
+  ACTIVE
+  BLOCKED
+}
+
+enum Role {
+  USER
+  AUTHOR
+  ADMIN
+}
