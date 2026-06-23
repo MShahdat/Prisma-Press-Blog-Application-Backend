@@ -20,6 +20,5 @@ enum ActiveStatus{
 
 enum Role {
   USER
-  AUTHOR
   ADMIN
 }

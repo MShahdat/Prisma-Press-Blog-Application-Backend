@@ -6,7 +6,7 @@ export interface USER {
   email: string
   password?: string
   activeStatus?: "ACTIVE" | "BLOCK"
-  role?: "ADMIN" | "USER" | "AUTHOR"
+  role?: "ADMIN" | "USER"
   createdAt?: Date
   updatedAt?: Date
   profilePhoto?: string

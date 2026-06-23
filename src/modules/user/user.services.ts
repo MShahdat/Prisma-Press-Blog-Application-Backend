@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 import { USER } from "./user.type"
 
 
-
+//& USER REGISTER
 const userRegisterIntoDB = async (payload: USER) => {
   const {name, email, password, profilePhoto} = payload
   const isUser = await prisma.user.findUnique({
@@ -49,6 +49,18 @@ const userRegisterIntoDB = async (payload: USER) => {
 }
 
 
+//& ALL USER GET
+const userGetFromDB = async () => {
+  const users = await prisma.user.findMany({
+    include: {
+      profile: true
+    }
+  })
+
+  return users
+}
+
 export const userServices = {
   userRegisterIntoDB,
+  userGetFromDB,
 }
