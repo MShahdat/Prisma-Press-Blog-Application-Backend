@@ -5,6 +5,7 @@ dotenv.config({path: path.join(process.cwd(), ".env")})
 
 const config = {
   port: process.env.PORT,
+  solt_or_rounds: process.env.SOLT_OR_ROUNDS,
   database_url: process.env.DATABASE_URL,
   app_url: process.env.APP_URL,
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
