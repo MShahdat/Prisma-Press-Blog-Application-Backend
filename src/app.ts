@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import cookieParser from 'cookie-parser';
 import { userRouter } from "./modules/user/user.routes";
 import { rootResponse } from "./utility/responseMessage";
@@ -11,6 +11,11 @@ app.use(express.json())
 app.use(express.text())
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
+
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//   console.log('Time : ', Date.now());
+//   next();
+// })
 
 
 //& All route handle

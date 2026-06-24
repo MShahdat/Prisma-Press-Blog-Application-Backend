@@ -14,6 +14,11 @@ const loginFromDB = async (payload: LOGIN) => {
   if (!user) {
     return 0
   }
+
+  // const user = await prisma.user.findUniqueOrThrow({
+  //   where: {email}
+  // })
+
   const pass = user.password
   const isMatch = await bcrypt.compare(password, pass)
 

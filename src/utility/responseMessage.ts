@@ -17,6 +17,7 @@ export const rootResponse = (res: Response) => {
   })
 }
 
+
 //& SUCCESS RESPNSE
 export const successResponse = (res: Response, message?: string, data?: any) => {
   const response = {
@@ -27,20 +28,6 @@ export const successResponse = (res: Response, message?: string, data?: any) => 
   }
   res.status(httpCode.OK).json(response)
 }
-
-
-
-//& GET ALL SUCCESS RESPNSE
-export const allResponse = (res: Response, message: string, data?: USER) => {
-  const response = {
-    success: true,
-    statusCode: httpCode.OK,
-    message,
-    data 
-  }
-  res.status(200).json(response)
-}
-
 
 
 //& ERROR RESPONSE

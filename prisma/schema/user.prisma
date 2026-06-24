@@ -13,7 +13,7 @@ model User {
   comment Comment[]
 }
 
-enum ActiveStatus{
+enum ActiveStatus {
   ACTIVE
   BLOCKED
 }
