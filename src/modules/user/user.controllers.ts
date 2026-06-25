@@ -1,10 +1,12 @@
 import { userServices } from "./user.services"
 import { NextFunction, Request, RequestHandler, Response } from 'express'
 import httpCode from 'http-status'
-import { createResponse, errorResponse, notFoundResponse, successResponse } from "../../utility/responseMessage"
+import { createResponse, errorResponse, notFoundResponse, successResponse, unauthorizedResponse } from "../../utility/responseMessage"
 import { USER } from "./user.type"
 import catchAsync from "../../utility/catchAsync"
-
+import jwt, { JwtPayload } from 'jsonwebtoken'
+import config from "../../config/env"
+import { jwtToken } from "../../utility/jwt"
 
 //& USER REGISTER
 const userRegister = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -27,7 +29,29 @@ const allUserGet = catchAsync(async (req: Request, res: Response, next: NextFunc
   successResponse(res, "All users retrive succssfully", users as any)
 })
 
+
+//& GET ME
+const getMe = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+
+  // console.log('user from request --- ', req.user)
+  
+  if(!req.user){
+    return notFoundResponse(res)
+  }
+
+  const {id} = req.user
+
+  const result = await userServices.getMeFromDB(id)
+  if(!result){
+    return notFoundResponse(res)
+  }
+
+  return successResponse(res, 'User retrive successfully', result)
+
+})
+
 export const userController = {
   userRegister,
   allUserGet,
+  getMe,
 }

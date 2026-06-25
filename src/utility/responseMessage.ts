@@ -34,6 +34,7 @@ export const successResponse = (res: Response, message?: string, data?: any) => 
 export const errorResponse = (res: Response, message: string, error?: any) => {
   const response = {
     success: false,
+    statusCode: 500,
     message,
     error: error?.stack
   }

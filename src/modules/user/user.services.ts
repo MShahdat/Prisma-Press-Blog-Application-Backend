@@ -6,7 +6,7 @@ import { USER } from "./user.type"
 
 //& USER REGISTER
 const userRegisterIntoDB = async (payload: USER) => {
-  const {name, email, password, profilePhoto} = payload
+  const {name, email, password, activeStatus, role, profilePhoto, bio, } = payload
   const isUser = await prisma.user.findUnique({
     where: {email}
   })
@@ -22,9 +22,11 @@ const userRegisterIntoDB = async (payload: USER) => {
       name: name,
       email: email,
       password: hasPass,
+      role: role,
       profile: {
         create: {
-          profilePhoto
+          profilePhoto,
+          bio
         }
       }
     }
@@ -65,7 +67,28 @@ const userGetFromDB = async () => {
   return users
 }
 
+
+//& GET ME
+const getMeFromDB = async (id: string) => {
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id
+    },
+    omit: {
+      password: true,
+    },
+    include: {
+      profile: true,
+    }
+  })
+
+  return user
+}
+
+
 export const userServices = {
   userRegisterIntoDB,
   userGetFromDB,
+  getMeFromDB,
 }

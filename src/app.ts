@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import { userRouter } from "./modules/user/user.routes";
 import { rootResponse } from "./utility/responseMessage";
 import { authRouter } from "./modules/auth/auth.routes";
+import logger from "./middleWare/logger";
 
 
 const app: Application = express()
@@ -11,11 +12,7 @@ app.use(express.json())
 app.use(express.text())
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
-
-// app.use((req: Request, res: Response, next: NextFunction) => {
-//   console.log('Time : ', Date.now());
-//   next();
-// })
+app.use(logger)
 
 
 //& All route handle

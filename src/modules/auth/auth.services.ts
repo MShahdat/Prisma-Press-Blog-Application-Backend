@@ -1,8 +1,9 @@
 import jwt, { SignOptions, type JwtPayload } from "jsonwebtoken"
 import { prisma } from "../../lib/prisma"
-import { LOGIN } from "./type"
+import {LOGIN } from "./type"
 import bcrypt from 'bcrypt'
 import config from "../../config/env"
+import { jwtToken } from "../../utility/jwt"
 
 const loginFromDB = async (payload: LOGIN) => {
   const { email, password } = payload
@@ -14,10 +15,6 @@ const loginFromDB = async (payload: LOGIN) => {
   if (!user) {
     return 0
   }
-
-  // const user = await prisma.user.findUniqueOrThrow({
-  //   where: {email}
-  // })
 
   const pass = user.password
   const isMatch = await bcrypt.compare(password, pass)
@@ -43,15 +40,16 @@ const loginFromDB = async (payload: LOGIN) => {
 
   console.log('jwt payload ', jwtPayload)
 
-  const accessToken = jwt.sign(
+  const accessToken = jwtToken.createToken(
     jwtPayload,
-    config.jwt_access_sectet as string,
-    { expiresIn: config.jwt_access_expires_in as SignOptions['expiresIn'] })
+    config.jwt_access_sectet,
+    config.jwt_access_expires_in as SignOptions['expiresIn'],
+  )
 
-  const refreshToken = jwt.sign(
+  const refreshToken = jwtToken.createToken(
     jwtPayload,
-    config.jwt_refresh_secret as string,
-    { expiresIn: config.jwt_refresh_expires_in as SignOptions['expiresIn'] }
+    config.jwt_refresh_secret,
+    config.jwt_refresh_expires_in as SignOptions['expiresIn'],
   )
 
   const result = {
@@ -62,8 +60,9 @@ const loginFromDB = async (payload: LOGIN) => {
 }
 
 
+//& GENERATE REFRESH TOKEN
 const generateRefreshToken = async (token: string) => {
-  try {
+  
     if (!token) {
       throw new Error("Unauthorized access!");
     }
@@ -95,15 +94,12 @@ const generateRefreshToken = async (token: string) => {
       
       // console.log(jwtPayload)
 
-      const accessToken = jwt.sign(jwtPayload, config.jwt_access_sectet as string, {expiresIn: config.jwt_access_expires_in as SignOptions['expiresIn']})
+      const accessToken = jwtToken.createToken(jwtPayload, config.jwt_access_sectet, config.jwt_access_expires_in as SignOptions['expiresIn']
+      )
 
       // console.log('access token: ', accessToken)
 
       return accessToken;
-  }
-  catch (error: any) {
-    throw new Error(error.message)
-  }
 }
 
 
