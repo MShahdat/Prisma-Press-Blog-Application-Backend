@@ -3,13 +3,18 @@ import { forbiddenResponse, unauthorizedResponse } from "../utility/responseMess
 import { jwtToken } from "../utility/jwt";
 import config from "../config/env";
 import { ActiveStatus } from "../../generated/prisma/enums";
+import catchAsync from "../utility/catchAsync";
 
 const roleAuth = (...roles: string[]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    // const token = req.cookies.accessToken
-    const token = req.headers.authorization
+  return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const token = req.cookies.accessToken ? req.cookies.accessToken
+      :
+      req.headers.authorization?.startsWith('Bearer ') ? req.headers.authorization.split(' ')[1]
+        :
+        req.headers.authorization
 
-    console.log('token ---- ', token)
+
+    // console.log('token ---- ', token)
     if (!token) {
       return unauthorizedResponse(res, 'Unauthorized access');
     }
@@ -19,17 +24,18 @@ const roleAuth = (...roles: string[]) => {
       return unauthorizedResponse(res, "unauthorized")
     }
 
-    const {id, name, email, activeStatus, role} = decoded;
+    const { id, name, email, activeStatus, role } = decoded;
     console.log('role - ', role)
+    console.log('status ---', activeStatus)
 
-    if(activeStatus === ActiveStatus.BLOCKED){
+    if (activeStatus === 'BLOCKED') {
       throw new Error('user temporary blocked')
     }
 
     if (!roles.includes(role)) {
       return forbiddenResponse(res, 'do not permit for you')
     }
-    
+
     req.user = {
       id,
       name,
@@ -38,7 +44,7 @@ const roleAuth = (...roles: string[]) => {
       role
     }
     next();
-  }
+  })
 }
 
 

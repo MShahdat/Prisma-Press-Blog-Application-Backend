@@ -4,6 +4,8 @@ import { userRouter } from "./modules/user/user.routes";
 import { rootResponse } from "./utility/responseMessage";
 import { authRouter } from "./modules/auth/auth.routes";
 import logger from "./middleWare/logger";
+import { postsRouter } from "./modules/posts/posts.routes";
+import { commentRouter } from "./modules/comments/comments.routes";
 
 
 const app: Application = express()
@@ -27,5 +29,10 @@ app.use('/api/users', userRouter)
 //* auth
 app.use('/api/auth', authRouter)
 
+//* posts
+app.use('/api/posts', postsRouter)
+
+//* comments
+app.use('/api/comments', commentRouter)
 
 export default app

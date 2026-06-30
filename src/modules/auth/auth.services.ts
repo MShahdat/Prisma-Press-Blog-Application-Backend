@@ -5,6 +5,8 @@ import bcrypt from 'bcrypt'
 import config from "../../config/env"
 import { jwtToken } from "../../utility/jwt"
 
+
+//& LOGIN
 const loginFromDB = async (payload: LOGIN) => {
   const { email, password } = payload
 

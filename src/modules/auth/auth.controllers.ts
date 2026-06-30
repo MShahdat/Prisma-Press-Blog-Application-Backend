@@ -32,7 +32,7 @@ const login = catchAsync(async (req: Request, res: Response) => {
     secure: false,
     httpOnly: true,
     sameSite: "none",
-    maxAge: 1000 * 60 * 60 * 24 * 1
+    maxAge: 1000 * 60 * 60 * 1
   })
 
   // console.log('cookies', req.cookies)

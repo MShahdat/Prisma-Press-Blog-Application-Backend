@@ -19,7 +19,7 @@ export const rootResponse = (res: Response) => {
 
 
 //& SUCCESS RESPNSE
-export const successResponse = (res: Response, message?: string, data?: any) => {
+export const successResponse = <T> (res: Response, message?: string, data?: T) => {
   const response = {
     success: true,
     statusCode: httpCode.OK,
@@ -44,7 +44,7 @@ export const errorResponse = (res: Response, message: string, error?: any) => {
 
 
 //& CREATE RESPNSE
-export const createResponse = (res: Response, message: string, data?: USER) => {
+export const createResponse = <T>(res: Response, message: string, data?: T) => {
   const response = {
     success: true,
     statusCode: httpCode.CREATED,
@@ -56,7 +56,7 @@ export const createResponse = (res: Response, message: string, data?: USER) => {
 
 
 //& LOGIN RESPONSE
-export const loginResponse = (res: Response, data: any) => {
+export const loginResponse = <T>(res: Response, data: T) => {
   const response = {
     success: true,
     statusCode: httpCode.OK,

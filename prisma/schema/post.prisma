@@ -1,18 +1,22 @@
-
 model Post {
-  id String @id @default(uuid())
-  title String
-  content String
-  thumbnail String
-  isFeatured Boolean
-  status Status @default(PUBLISHED)
-  tags Status[]
-  views Int
-  authorId String
-  author User @relation(fields: [authorId], references: [id])
+  id         String   @id @default(uuid())
+  title      String
+  content    String
+  thumbnail  String
+  isFeatured Boolean  @default(false)
+  status     Status   @default(PUBLISHED)
+  tags       String[]
+  views      Int      @default(0)
+  authorId   String
+  author     User     @relation(fields: [authorId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment Comment[] 
+
+  comment Comment[]
+
+  @@index([authorId])
+  @@map("posts")
 }
 
 enum Status {

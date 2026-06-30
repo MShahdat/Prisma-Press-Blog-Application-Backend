@@ -5,7 +5,7 @@ export interface USER {
   name: string
   email: string
   password?: string
-  activeStatus?: "ACTIVE" | "BLOCK"
+  activeStatus?: "ACTIVE" | "BLOCKED"
   role?: "ADMIN" | "USER"
   createdAt?: Date
   updatedAt?: Date

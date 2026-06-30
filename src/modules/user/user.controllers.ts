@@ -50,8 +50,26 @@ const getMe = catchAsync(async(req: Request, res: Response, next: NextFunction) 
 
 })
 
+
+//& PUT USER PROFILE
+const updateProfile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const body = req.body
+  console.log('body ---- ', body)
+  console.log('user --- ', req.user)
+
+  if(!req.user){
+    return notFoundResponse(res)
+  }
+
+  const result = await userServices.updateProfileFromDB(req.user?.id as string, body)
+
+  return successResponse(res, 'profile updated successfully', result)
+})
+
+
 export const userController = {
   userRegister,
   allUserGet,
   getMe,
+  updateProfile,
 }
