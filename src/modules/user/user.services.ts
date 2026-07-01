@@ -1,7 +1,7 @@
 import config from "../../config/env"
 import { prisma } from "../../lib/prisma"
 import bcrypt from 'bcrypt'
-import { USER } from "./user.type"
+import { UpdatePayload, USER } from "./user.type"
 
 
 //& USER REGISTER
@@ -22,6 +22,7 @@ const userRegisterIntoDB = async (payload: USER) => {
       name: name,
       email: email,
       password: hasPass,
+      activeStatus,
       role: role,
       profile: {
         create: {
@@ -60,7 +61,15 @@ const userRegisterIntoDB = async (payload: USER) => {
 const userGetFromDB = async () => {
   const users = await prisma.user.findMany({
     include: {
-      profile: true
+      profile: true,
+      comment: true,
+      post: false
+    },
+    omit: {
+      password: true
+    },
+    orderBy: {
+      createdAt: "desc"
     }
   })
 
@@ -80,6 +89,7 @@ const getMeFromDB = async (id: string) => {
     },
     include: {
       profile: true,
+      comment: true
     }
   })
 
@@ -88,15 +98,22 @@ const getMeFromDB = async (id: string) => {
 
 
 //& UPDATE USER PROFILE
-const updateProfileFromDB = async (id: string, payload: any) => {
+const updateProfileFromDB = async (id: string, payload: UpdatePayload) => {
 
-  const {name, activeStatus, profilePhoto, bio} = payload
+  const allowKey = ['name', 'profilePhoto', 'bio'] as const
+  const {name, profilePhoto, bio} = payload
+  const keys = Object.keys(payload)
+
+  const isValid = keys.some((key) => !allowKey.includes(key as any))
+  
+  if(isValid){
+    throw new Error('Invalid or extra fields in request body')
+  }
 
   const updateProfile = await prisma.user.update({
     where: {id: id},
     data: {
       name,
-      activeStatus,
       profile: {
         update: {
           profilePhoto,

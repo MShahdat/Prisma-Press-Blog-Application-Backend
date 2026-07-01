@@ -20,13 +20,11 @@ const userRegister = catchAsync(async (req: Request, res: Response, next: NextFu
 //& USER GET
 const allUserGet = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const users = await userServices.userGetFromDB()
-  // console.log(req)
 
   if (users.length === 0) {
     notFoundResponse(res)
   }
-  // console.log(users)
-  successResponse(res, "All users retrive succssfully", users as any)
+  return successResponse(res, "All users retrive succssfully", users as any)
 })
 
 

@@ -9,17 +9,15 @@ const login = catchAsync(async (req: Request, res: Response) => {
   const body = req.body
   const result = await authServices.loginFromDB(body)
 
-  if (result === 0) {
-    notFoundResponse(res)
-    return
-  }
   if (!result) {
-    badResponse(res, "Invalid user credentials")
+    return notFoundResponse(res)
+  }
+
+  if (result === 'invalid') {
+    badResponse(res, "Invalid email or password")
     return
   }
 
-
- 
 
   res.cookie('refreshToken', result.refreshToken, {
     secure: false,    // set ture in production
@@ -50,6 +48,14 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   if (!result) {
     throw new Error('User is blocked. Please try again letter')
   }
+  
+  res.cookie('accessToken', result, {
+    secure: false,
+    httpOnly: true,
+    sameSite: "none",
+    maxAge: 1000 * 60 * 60 * 1
+  })
+
 
   const rs = {
     accessToken: result

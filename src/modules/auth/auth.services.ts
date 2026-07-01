@@ -1,6 +1,6 @@
 import jwt, { SignOptions, type JwtPayload } from "jsonwebtoken"
 import { prisma } from "../../lib/prisma"
-import {LOGIN } from "./type"
+import {LOGIN } from "./auth.type"
 import bcrypt from 'bcrypt'
 import config from "../../config/env"
 import { jwtToken } from "../../utility/jwt"
@@ -9,20 +9,20 @@ import { jwtToken } from "../../utility/jwt"
 //& LOGIN
 const loginFromDB = async (payload: LOGIN) => {
   const { email, password } = payload
-
+  
   const user = await prisma.user.findUnique({
     where: { email }
   })
 
   if (!user) {
-    return 0
+    return null
   }
 
   const pass = user.password
   const isMatch = await bcrypt.compare(password, pass)
 
   if (!isMatch) {
-    return false
+    return 'invalid'
   }
 
   //& JWT TOKEN GENERATE

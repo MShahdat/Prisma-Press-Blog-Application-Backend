@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { commentControllers } from "./comments.controllers";
+import catchAsync from "../../utility/catchAsync";
 
 
 const router = Router()
 
-router.post('/', commentControllers.commentCreate)
+router.post('/', catchAsync(commentControllers.commentCreate))
 
 
 

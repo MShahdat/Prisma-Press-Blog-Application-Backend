@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { forbiddenResponse, unauthorizedResponse } from "../utility/responseMessage";
 import { jwtToken } from "../utility/jwt";
 import config from "../config/env";
-import { ActiveStatus } from "../../generated/prisma/enums";
+import { ActiveStatus, Role } from "../../generated/prisma/enums";
 import catchAsync from "../utility/catchAsync";
 
 const roleAuth = (...roles: string[]) => {
@@ -48,7 +48,19 @@ const roleAuth = (...roles: string[]) => {
 }
 
 
+const ownAuth = (loggedRole: Role, authorId: string, userId: string, role: Role) => {
+  if(loggedRole === 'USER' && (authorId !== userId)){
+    return 'unauthorized'
+  }
+
+  if(loggedRole === 'ADMIN' && role === 'ADMIN'){
+    if(authorId !== userId){
+      return 'unauthorized'
+    }
+  }
+}
 export const authorization = {
   roleAuth,
+  ownAuth,
 }
 

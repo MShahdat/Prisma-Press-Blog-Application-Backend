@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import httpCode from 'http-status'
 import { USER } from "../modules/user/user.type";
 
@@ -32,15 +32,15 @@ export const successResponse = <T> (res: Response, message?: string, data?: T) =
 
 //& ERROR RESPONSE
 export const errorResponse = (res: Response, message: string, error?: any) => {
+  const statusCode = error.statusCode || 500;
   const response = {
     success: false,
-    statusCode: 500,
-    message,
-    error: error?.stack
+    statusCode,
+    message:  message || 'Something went wrong',
+    error
   }
   res.status(500).json(response)
 }
-
 
 
 //& CREATE RESPNSE

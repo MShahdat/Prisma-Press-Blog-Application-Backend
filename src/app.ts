@@ -16,7 +16,6 @@ app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(logger)
 
-
 //& All route handle
 app.get('/', async (req: Request, res: Response) => {
   rootResponse(res)

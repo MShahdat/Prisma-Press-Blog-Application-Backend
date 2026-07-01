@@ -12,3 +12,13 @@ export interface USER {
   profilePhoto?: string
   bio?:string
 }
+
+
+export interface UpdatePayload {
+  name?: string
+  password?: string
+  updatedAt?: Date
+  profilePhoto?: string
+  bio?:string
+}
+

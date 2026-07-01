@@ -14,3 +14,12 @@ export interface POSTS {
   updatedAt?: Date
   comment?: string[]
 }
+
+
+
+export interface updatePayload {
+  title?: string
+  content?: string
+  thumbnail?: string
+  tags?: string[]
+}
