@@ -48,17 +48,20 @@ const roleAuth = (...roles: string[]) => {
 }
 
 
-const ownAuth = (loggedRole: Role, authorId: string, userId: string, role: Role) => {
+const ownAuth = (loggedRole: Role, authorId: string, userId: string) => {
   if(loggedRole === 'USER' && (authorId !== userId)){
     return 'unauthorized'
   }
 
-  if(loggedRole === 'ADMIN' && role === 'ADMIN'){
-    if(authorId !== userId){
-      return 'unauthorized'
-    }
-  }
+  // if(loggedRole === 'ADMIN' && role === 'ADMIN'){
+  //   if(authorId !== userId){
+  //     return 'unauthorized'
+  //   }
+  // }
 }
+
+
+
 export const authorization = {
   roleAuth,
   ownAuth,

@@ -8,7 +8,7 @@ import catchAsync from "../../utility/catchAsync";
 const router = Router()
 
 router.post('/register', catchAsync(userController.userRegister))
-router.get('/', catchAsync(userController.allUserGet)) // extra
+router.get('/', authorization.roleAuth(Role.ADMIN), catchAsync(userController.allUserGet)) // extra
 router.get('/me', authorization.roleAuth(Role.ADMIN, Role.USER), catchAsync(userController.getMe));
 router.put('/my-profile', authorization.roleAuth(Role.ADMIN, Role.USER), catchAsync(userController.updateProfile))
 

@@ -132,9 +132,7 @@ const updatePostIntoDB = async (postId: string, payload: updatePayload, userId: 
   }
 
   const {authorId} = post
-  const role = post.author.role
-
-  const getAccess = authorization.ownAuth(loggedRole, authorId, userId, role)
+  const getAccess = authorization.ownAuth(loggedRole, authorId, userId)
 
   if(getAccess === 'unauthorized'){
     return 'unauthorized'

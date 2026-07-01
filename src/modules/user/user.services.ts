@@ -62,7 +62,11 @@ const userGetFromDB = async () => {
   const users = await prisma.user.findMany({
     include: {
       profile: true,
-      comment: true,
+      comment: {
+        // where: {
+        //   status: 'APPROVED'
+        // }
+      },
       post: false
     },
     omit: {
